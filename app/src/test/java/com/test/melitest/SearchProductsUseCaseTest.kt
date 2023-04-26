@@ -19,11 +19,12 @@ class SearchProductsUseCaseTest {
     fun givenAqueryParameterWhenUseCaseIsExecuteThenShouldCallRepositoryOneTime() {
         //Arrange
         val repository = mockk<ProductsRepository>()
-        val result: RequestResult<ProductsResult> = RequestResult.Success(ProductsResult(results = emptyList()))
+        val result: RequestResult<ProductsResult> =
+            RequestResult.Success(ProductsResult(results = emptyList()))
         val searchProductsUseCase = SearchProductsUseCase(repository)
         coEvery {
             repository.searchProducts("moto")
-        } answers  {
+        } answers {
             result
         }
 
@@ -42,12 +43,13 @@ class SearchProductsUseCaseTest {
     fun givenAemptyQueryParameterWhenUseCaseIsExecuteThenShouldReturnEmptyList() {
         //Arrange
         val repository = mockk<ProductsRepository>()
-        val result: RequestResult<ProductsResult> = RequestResult.Success(ProductsResult(results = emptyList()))
+        val result: RequestResult<ProductsResult> =
+            RequestResult.Success(ProductsResult(results = emptyList()))
         val searchProductsUseCase = SearchProductsUseCase(repository)
 
         coEvery {
             repository.searchProducts("")
-        } answers  {
+        } answers {
             result
         }
 
@@ -57,7 +59,7 @@ class SearchProductsUseCaseTest {
         }
 
         //Assert
-        Assert.assertEquals(result,response)
+        Assert.assertEquals(result, response)
     }
 
     @Test
@@ -66,14 +68,27 @@ class SearchProductsUseCaseTest {
         val repository = mockk<ProductsRepository>()
         val searchProductsUseCase = SearchProductsUseCase(repository)
 
-        val product0 = Product(id = "1A", title = "celular", condition = "Nuevo", thumbnail_id = "ABC1", price = 1000)
-        val product1 = Product(id = "2A", title = "Tablet", condition = "Nuevo", thumbnail_id = "ABC2", price = 1500)
-        val mockResult: RequestResult<ProductsResult> = RequestResult.Success(ProductsResult(results = listOf(product0, product1)))
+        val product0 = Product(
+            id = "1A",
+            title = "celular",
+            condition = "Nuevo",
+            thumbnail_id = "ABC1",
+            price = 1000
+        )
+        val product1 = Product(
+            id = "2A",
+            title = "Tablet",
+            condition = "Nuevo",
+            thumbnail_id = "ABC2",
+            price = 1500
+        )
+        val mockResult: RequestResult<ProductsResult> =
+            RequestResult.Success(ProductsResult(results = listOf(product0, product1)))
         val expectedResult = listOf(product0, product1)
 
         coEvery {
             repository.searchProducts("product")
-        } answers  {
+        } answers {
             mockResult
         }
 
@@ -84,7 +99,7 @@ class SearchProductsUseCaseTest {
 
         //Assert
         Assert.assertTrue(response is RequestResult.Success)
-        Assert.assertEquals(expectedResult,(response as RequestResult.Success).data?.results)
+        Assert.assertEquals(expectedResult, (response as RequestResult.Success).data?.results)
     }
 
     @Test
@@ -92,12 +107,12 @@ class SearchProductsUseCaseTest {
         //Arrange
         val repository = mockk<ProductsRepository>()
         val searchProductsUseCase = SearchProductsUseCase(repository)
-        val errorResponse = ErrorResponse("Error message","error", 400)
+        val errorResponse = ErrorResponse("Error message", "error", 400)
         val mockErrorResult: RequestResult<ProductsResult> = RequestResult.Failure(errorResponse)
 
         coEvery {
             repository.searchProducts("mazda")
-        } answers  {
+        } answers {
             mockErrorResult
         }
 
